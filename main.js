@@ -20,6 +20,8 @@ bot.command('start', ctx => {
 
 bot.command('sir', ctx => gpt.handleAnswerCommand(ctx) );
 
+bot.on('::bot_command', () => {});
+
 bot.on(['msg:text', 'msg:caption'], ctx =>  {
     if (ctx.message.reply_to_message?.from?.id === ctx.me.id) {
         gpt.answerReply(ctx);
