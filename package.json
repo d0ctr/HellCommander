@@ -1,0 +1,25 @@
+{
+  "name": "hellcommander",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d0ctr/hellcommander.git"
+  },
+  "author": "d0ctr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/d0ctr/hellcommander/issues"
+  },
+  "homepage": "https://github.com/d0ctr/hellcommander#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "grammy": "^1.21.1",
+    "openai": "^4.28.0"
+  }
+}
