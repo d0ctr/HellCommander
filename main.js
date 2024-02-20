@@ -1,15 +1,15 @@
 require('dotenv').config();
 
-const { Bot } = require('grammy');
-
-const gpt = require('./gpt');
-
 const { OPENAI_TOKEN, TELEGRAM_TOKEN } = process.env;
 
 if (!OPENAI_TOKEN?.length || !TELEGRAM_TOKEN?.length) {
     console.error('[ERROR] No tokens to proceed');
     process.exit();
 }
+
+const { Bot } = require('grammy');
+
+const gpt = require('./gpt');
 
 const bot = new Bot(TELEGRAM_TOKEN);
 
