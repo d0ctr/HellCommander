@@ -1,13 +1,13 @@
 require('dotenv').config();
 
-const { OPENAI_TOKEN, TELEGRAM_TOKEN } = process.env;
+const { OPENAI_TOKEN, TELEGRAM_TOKEN, DOMAIN, PORT } = process.env;
 
 if (!OPENAI_TOKEN?.length || !TELEGRAM_TOKEN?.length) {
     console.error('[ERROR] No tokens to proceed');
     process.exit();
 }
 
-const { Bot } = require('grammy');
+const { Bot, webhookCallback } = require('grammy');
 
 const gpt = require('./gpt');
 
@@ -33,4 +33,16 @@ bot.on(['msg:text', 'msg:caption'], ctx =>  {
 
 bot.api.setMyCommands( [{ command: 'sir', description: 'request assistance from the commander' }], { scope: { type: 'default' } } );
 
-bot.start({ onStart: () => console.info('[INFO] Bot started') }).catch(err => console.error(`[ERROR] Bot error: ${JSON.stringify(err)}`));
+if (PORT != null && DOMAIN != null) {
+    const express = require('express');
+    const app = express();
+    app.use(express.json());
+    app.use(webhookCallback(bot, 'express'));
+    bot.init()
+        .then(() => bot.api.setWebhook(`${DOMAIN}/webhook/tg`))
+        .then(() => app.listen(PORT, () => console.info('[INFO] Bot (webhook) started')))
+        .catch(err => console.error(`[ERROR] Bot error: ${JSON.stringify(err)}`));
+}
+else {
+    bot.start({ onStart: () => console.info('[INFO] Bot (longpolling) started') }).catch(err => console.error(`[ERROR] Bot error: ${JSON.stringify(err)}`));
+}
